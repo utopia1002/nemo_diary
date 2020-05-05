@@ -4,10 +4,10 @@ import 'box/boxes.dart';
 import 'data/models.dart';
 import 'data/views.dart';
 import 'listview/listview.dart';
-import 'box/colors.dart';
+import 'box/boxeditview.dart';
 
 int currentpage;
-int colornumber;
+
 String InitText;
 
 class DetailPage extends StatelessWidget{
@@ -35,7 +35,7 @@ class DetailPage extends StatelessWidget{
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: IconButton(icon: Icon(Icons.arrow_back), iconSize: 40, color: Colors.white,
+              leading: IconButton(icon: Icon(Icons.arrow_back), iconSize: 30, color: Colors.indigoAccent,
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context) => home())
@@ -43,7 +43,7 @@ class DetailPage extends StatelessWidget{
                 },
               ),
               actions: <Widget>[
-                IconButton(icon :Icon(Icons.mode_edit), iconSize: 40, color: Colors.white,
+                IconButton(icon :Icon(Icons.mode_edit), iconSize: 30, color: Colors.indigoAccent,
                     onPressed: ()=> write(context)),
               ],
             ),
@@ -51,23 +51,15 @@ class DetailPage extends StatelessWidget{
         )
     );
   }
-
+  
   Future<void> write(BuildContext context) async{
-
-    var _date = DateTime.now();
-    var _dateY = _date.year.toString();
-    var _dateM = _date.month.toString().padLeft(2, '0');
-    var _dateD = _date.day.toString().padLeft(2, '0');
-
-    var _convDate = "$_dateY - $_dateM - $_dateD";
 
     Future<void> save() async{
       DBHelper pen = DBHelper();
       Diary newDiary = Diary(
         content: InitText,
         boxnumber: pagenumber,
-        color: colornumber,
-        date: _convDate,
+        color: 1,
       );
       await pen.createDiary(newDiary);
     }
@@ -106,9 +98,8 @@ class boxwritebase extends StatefulWidget{
 
 class _boxwritestate extends State<boxwritebase>{
 
-  var pickerWidth = 240.0;
+  var pickerWidth = 200.0;
   bool pickerSelect = false;
-  List<Color> initColor;
 
   TextEditingController _textcontroller = TextEditingController();
 
@@ -121,7 +112,7 @@ class _boxwritestate extends State<boxwritebase>{
       children: <Widget>[
         mainPageContent(),
         Positioned(right: 10, top: 80, child: colorSelect()),
-        Positioned(right: 60, top: 80, child: colorPicker()),
+        Positioned(right: 50, top: 80, child: colorPicker()),
       ],
 
     );
@@ -138,7 +129,16 @@ class _boxwritestate extends State<boxwritebase>{
         elevation: 3.0,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         constraints: BoxConstraints.tightForFinite(),
-        child: Icon(Icons.color_lens, color: Colors.white, size: 30,),
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [Colors.deepPurpleAccent, Colors.yellowAccent],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,),
+            borderRadius: BorderRadius.circular(100.0),
+          ),
+          width: 30.0,
+          height: 30.0,
+        ),
       ),
     );
   }
@@ -146,52 +146,27 @@ class _boxwritestate extends State<boxwritebase>{
   Widget colorPicker(){
     return AnimatedContainer(
       child: ListView.builder(
-        itemBuilder: (BuildContext context, int index){
-          if(index.isEven){
-            return RawMaterialButton(
-              child: Ink(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: colors[index ~/ 2],
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: Colors.white),
-                ),
-                height: 30,
-                width: 30,
-              ),
-              elevation: 2.0 ,
-              onPressed: (){
-                setState(() {
-                  initColor = colors[index ~/ 2];
-                  colornumber = index ~/ 2;
-                });
-              },
-              padding: EdgeInsets.zero,
-              constraints: BoxConstraints.tightForFinite(),
-            );
-          }
-          return SizedBox(width: 5.0);
-        },
-        itemCount: colors.length * 2,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.zero,
+          itemBuilder: (BuildContext context, int index){
+            if(index.isEven){
+              return pickerCircle[index ~/ 2];
+            }
+            return SizedBox(width: 5.0);
+          },
+          itemCount: 6,
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.zero,
       ),
       height: 30.0,
       width: pickerSelect? pickerWidth: 0,
       duration: Duration(milliseconds: 200),
-      padding: EdgeInsets.zero,
-      constraints: BoxConstraints.tightForFinite(),
     );
   }
 
   Widget mainPageContent() {
-
     return Container(
         decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: initColor == null ? initColorSample : initColor,
+              colors: [Colors.deepPurpleAccent, Colors.yellowAccent],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             )
@@ -200,7 +175,7 @@ class _boxwritestate extends State<boxwritebase>{
         child: Container(
           child: PageView(
             children: <Widget>[
-              boxPreview(_textcontroller, InitText),
+              boxTest(_textcontroller, InitText),
             ],
           ),
           alignment: Alignment.center,
@@ -208,7 +183,7 @@ class _boxwritestate extends State<boxwritebase>{
     );
   }
 
-  Widget boxPreview(textcontroller, text){
+  Widget boxTest(textcontroller, text){
 
     void setText(text){
       setState((){
@@ -227,21 +202,17 @@ class _boxwritestate extends State<boxwritebase>{
           decoration: InputDecoration(
               suffixIcon: IconButton(
                 icon: Icon(Icons.send),
-                color: Colors.white,
                 onPressed: (){
                   setText(_textcontroller.text);
                 },
               ),
-              labelText: "아래를 탭하여 글쓰기",
-              labelStyle: TextStyle(color: Colors.white),
-
+              labelText: "Spit your mind"
           ),
-          style: TextStyle(color: Colors.white),
           onChanged: (context){
+            print(context);
             InitText = context;
             setText(_textcontroller.text);
           },
-          cursorColor: Colors.white,
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../data/views.dart';
 import '../box/boxes.dart';
+import '../box/colors.dart';
 
 class ListViewMain extends StatefulWidget{
 
@@ -62,10 +63,17 @@ class _ListViewMainState extends State<ListViewMain> {
               currentDiaryId = snapshot.data[index].id;
               return Container(
                 child:
-                  boxViewbuilder(snapshot.data[index].boxnumber, snapshot.data[index].content),
+                  Column(
+                    children: <Widget>[
+                      SizedBox(),
+                      boxViewbuilder(snapshot.data[index].boxnumber, snapshot.data[index].content),
+                      Text(snapshot.data[index].date, textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Colors.deepPurpleAccent, Colors.yellowAccent],
+                      colors: colors[snapshot.data[index].color],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     )
@@ -91,7 +99,10 @@ class _ListViewMainState extends State<ListViewMain> {
                 },
             ),
             FlatButton(
-              child: Text("돌아가기", style: TextStyle(color: Colors.black),)
+              child: Text("돌아가기", style: TextStyle(color: Colors.black),),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
             )
           ],
         );
@@ -100,8 +111,6 @@ class _ListViewMainState extends State<ListViewMain> {
   }
 
   Future<void> _deleteDiary(id, context) async{
-//    print(currentDiaryId);
-//    print("!!!!!!!!!!!!!!!!! $id");
     DBHelper pen = DBHelper();
     await pen.deleteDiary(id);
     refresh();

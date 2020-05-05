@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'box/boxes.dart';
-import 'detailScreen.dart';
 import 'listview/listview.dart';
+import 'detailScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -42,7 +42,7 @@ class home extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add), iconSize: 50, color: Colors.indigoAccent,
+            icon: Icon(Icons.add), iconSize: 50, color: Colors.white,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) => DetailPage(pagenumber: pagenumber)
@@ -90,6 +90,7 @@ class _baseState extends State<baseState> {
               onPageChanged: (context){
                 pagenumber = context;
               },
+
           )
         )
     );

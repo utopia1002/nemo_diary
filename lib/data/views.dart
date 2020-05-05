@@ -15,8 +15,8 @@ class DBHelper{
       onCreate: (db, version){
         return db.execute(
           "CREATE TABLE Diary("
-              "id INTEGER PRIMARY KEY,content TEXT,"
-              "boxnumber INTEGER, color INTEGER)"
+              "id INTEGER PRIMARY KEY, content TEXT,"
+              "boxnumber INTEGER, color INTEGER, date TEXT)"
         );
       },
       version: 1,
@@ -42,6 +42,7 @@ class DBHelper{
         content: maps[i]['content'],
         boxnumber: maps[i]['boxnumber'],
         color: maps[i]['color'],
+        date: maps[i]['date'],
       );
     });
   }
