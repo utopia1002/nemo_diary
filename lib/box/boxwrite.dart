@@ -14,22 +14,22 @@ class boxwriteMain extends StatelessWidget {
             primaryColor: Colors.blue
         ),
         home: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(icon: Icon(Icons.arrow_back), iconSize: 30, color: Colors.indigoAccent,
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => home())
-                );
-              },
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: IconButton(icon: Icon(Icons.arrow_back), iconSize: 30, color: Colors.indigoAccent,
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => home())
+                  );
+                },
+              ),
+              actions: <Widget>[
+                IconButton(icon :Icon(Icons.mode_edit), iconSize: 30, color: Colors.indigoAccent,)
+              ],
             ),
-            actions: <Widget>[
-              IconButton(icon :Icon(Icons.mode_edit), iconSize: 30, color: Colors.indigoAccent,)
-            ],
-          ),
-          body: boxwritebase()
+            body: boxwritebase()
         )
     );
   }
@@ -47,7 +47,7 @@ class _boxwritestate extends State<boxwritebase>{
   String InitText = "SHOW ME WHAT YOU GOT";
 
   Widget build(BuildContext context){
-     return mainPage();
+    return mainPage();
   }
 
   Widget mainPage() {
@@ -83,9 +83,9 @@ class _boxwritestate extends State<boxwritebase>{
     return Column(
       children: <Widget>[
         customBox(
-          [180.0, 180.0],
-          BorderRadius.circular(0),
-          text, [2.5, FontWeight.w700, Colors.white, TextAlign.center]),
+            [180.0, 180.0],
+            BorderRadius.circular(0),
+            text, [2.5, FontWeight.w700, Colors.white, TextAlign.center]),
         TextField(
           controller: textcontroller,
           maxLines: 4,

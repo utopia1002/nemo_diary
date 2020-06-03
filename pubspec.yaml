@@ -30,6 +30,9 @@ dev_dependencies:
   sqflite:
   path:
   intl: ^0.16.1
+  path_provider: ^1.6.8
+  permission_handler: ^3.2.0
+  image_gallery_saver: ^1.2.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

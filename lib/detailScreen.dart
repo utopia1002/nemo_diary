@@ -151,9 +151,9 @@ class _boxwritestate extends State<boxwritebase>{
             return RawMaterialButton(
               child: Ink(
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: colors[index ~/ 2],
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft
+                  gradient: LinearGradient(colors: colors[index ~/ 2],
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft
                   ),
                   borderRadius: BorderRadius.circular(100),
                   border: Border.all(color: Colors.white),
@@ -212,40 +212,63 @@ class _boxwritestate extends State<boxwritebase>{
 
     void setText(text){
       setState((){
-        print("setSTate");
         InitText = text.toString();
       });
     }
 
-    return Column(
+    return Stack(
+      alignment: Alignment.center,
       children: <Widget>[
         boxViewbuilder(pagenumber, InitText),
-        TextField(
-          controller: textcontroller,
-          maxLines: 4,
-          textAlign: TextAlign.center,
-          decoration: InputDecoration(
-              suffixIcon: IconButton(
-                icon: Icon(Icons.send),
-                color: Colors.white,
-                onPressed: (){
-                  setText(_textcontroller.text);
-                },
-              ),
+        Positioned(
+          child: TextField(
+            controller: textcontroller,
+            maxLines: 4,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
               labelText: "아래를 탭하여 글쓰기",
               labelStyle: TextStyle(color: Colors.white),
-
+            ),
+            style: TextStyle(color: Colors.white),
+            onChanged: (context){
+              InitText = context;
+              setText(_textcontroller.text);
+            },
+            cursorColor: Colors.white,
           ),
-          style: TextStyle(color: Colors.white),
-          onChanged: (context){
-            InitText = context;
-            setText(_textcontroller.text);
-          },
-          cursorColor: Colors.white,
-        ),
+          top: 50,
+          width: 300,
+        )
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
     );
+//    return Column(
+//      children: <Widget>[
+//        boxViewbuilder(pagenumber, InitText),
+//        TextField(
+//          controller: textcontroller,
+//          maxLines: 4,
+//          textAlign: TextAlign.center,
+//          decoration: InputDecoration(
+//            suffixIcon: IconButton(
+//              icon: Icon(Icons.send),
+//              color: Colors.white,
+//              onPressed: (){
+//                setText(_textcontroller.text);
+//              },
+//            ),
+//            labelText: "아래를 탭하여 글쓰기",
+//            labelStyle: TextStyle(color: Colors.white),
+//          ),
+//          style: TextStyle(color: Colors.white),
+//          onChanged: (context){
+//            InitText = context;
+//            setText(_textcontroller.text);
+//          },
+//          cursorColor: Colors.white,
+//        ),
+//      ],
+//      mainAxisAlignment: MainAxisAlignment.center,
+//      mainAxisSize: MainAxisSize.max,
+//    );
   }
 }
