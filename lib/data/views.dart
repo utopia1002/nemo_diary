@@ -13,6 +13,7 @@ class DBHelper{
     _db = openDatabase(
       join(await getDatabasesPath(), 'diary.db'),
       onCreate: (db, version){
+        db.query("Diary", orderBy: "id DESC");
         return db.execute(
           "CREATE TABLE Diary("
               "id INTEGER PRIMARY KEY, content TEXT,"
@@ -44,7 +45,7 @@ class DBHelper{
         color: maps[i]['color'],
         date: maps[i]['date'],
       );
-    });
+    }).reversed.toList();
   }
 
   Future<void> deleteDiary(int id) async{

@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:typed_data';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import '../history.dart';
+import '../helpScreen.dart';
 
 class ListViewMain extends StatefulWidget{
 
@@ -45,10 +45,10 @@ class _ListViewMainState extends State<ListViewMain> {
                 ));
               }),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.list),
+            IconButton(icon: Icon(Icons.help),
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => history()
+                  builder: (context) => helpScreen()
                 ));
               }
             ),
@@ -83,7 +83,7 @@ class _ListViewMainState extends State<ListViewMain> {
     if(renderObject is RenderRepaintBoundary){
       permission();
       var boundary = renderObject;
-      ui.Image image = await boundary.toImage();
+      ui.Image image = await boundary.toImage(pixelRatio: 2.0);
       final directory = (await getApplicationDocumentsDirectory()).path;
       ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       Uint8List pngBytes = byteData.buffer.asUint8List();
@@ -190,7 +190,12 @@ class _ListViewMainState extends State<ListViewMain> {
                 ),
                 alignment: Alignment.center,
               );
-            }, itemCount: snapshot.data.length, );
+            },
+            itemCount: snapshot.data.length,
+            onPageChanged: (context){
+              currentDiaryId = snapshot.data[context].id;
+            },
+          );
         }
         return child;
       },

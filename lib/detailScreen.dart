@@ -226,7 +226,7 @@ class _boxwritestate extends State<boxwritebase>{
             maxLines: 4,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
-              labelText: "아래를 탭하여 글쓰기",
+              labelText: "이곳을 탭하여 글쓰기",
               labelStyle: TextStyle(color: Colors.white),
             ),
             style: TextStyle(color: Colors.white),
